@@ -19,5 +19,7 @@ import 'cypress-mochawesome-reporter/register'
 import './addAddress';
 import './shipping-methods';
 import './payment-methods';
+import './buy-now-button';
+import './add-to-cart-button'
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

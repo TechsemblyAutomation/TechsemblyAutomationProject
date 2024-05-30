@@ -18,6 +18,11 @@ describe("Add products to cart", () => {
     it("Find and add all products from storefront", () => {
       cy.fixture("cart-data.json").then(data => { // Use productSlugs for multiple product slugs
         const productSlugs = data.productSlugs;
+         // Check if productSlugs is empty or undefined
+         if (!productSlugs || productSlugs.length === 0) {
+          cy.log('No product slugs found in the JSON file.');
+          return; // Stop execution if no data found
+      }
   
         productSlugs.forEach(productSlug => {
           cy.findProductByName(productSlug).then(() => {

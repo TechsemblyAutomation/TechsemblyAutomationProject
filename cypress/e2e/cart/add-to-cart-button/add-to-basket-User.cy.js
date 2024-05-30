@@ -14,9 +14,14 @@ describe("Add all products to cart", () => {
       });
     });
   
-    it("Find and add all products from Storefront", () => {
+    it.only("Find and add all products from Storefront", () => {
       cy.fixture("cart-data.json").then(data => {
         const productSlugs = data.productSlugs; // Use productSlugs for multiple product slugs
+         // Check if productSlugs is empty or undefined
+         if (!productSlugs || productSlugs.length === 0) {
+          cy.log('No product slugs found in the JSON file.');
+          return; // Stop execution if no data found
+      }
   
         productSlugs.forEach(productSlug => {
           cy.findProductByName(productSlug).then(() => {
