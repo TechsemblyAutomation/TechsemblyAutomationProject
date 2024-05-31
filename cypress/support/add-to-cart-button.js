@@ -6,6 +6,7 @@ Cypress.Commands.add('findProductByName', (productSlug) => {
         cy.url({ timeout: 15000 }).should('include', productSlug);
 
         if (productSlug.includes("physical")) {
+            cy.wait(3000)
             cy.AddRecpDetails();
             cy.ClickAddToCart();
 
@@ -13,6 +14,7 @@ Cypress.Commands.add('findProductByName', (productSlug) => {
             cy.ClickAddToCart();
 
         } else {
+            cy.wait(2000)
             cy.EnterEmail();
             cy.AddRecpDetails();
             cy.ClickAddToCart();

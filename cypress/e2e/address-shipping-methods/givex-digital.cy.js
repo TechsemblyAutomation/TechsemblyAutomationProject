@@ -1,46 +1,44 @@
-// cypress/e2e/checkout/add-address.cy.js
-import faker from 'faker';
+import 'cypress-iframe';
 
-describe("add in cart all products", ()=>{
-beforeEach(()=>{
-    cy.VisitStoreURL(); // visit store url
-})
-it("Find Product from Storefront", () => {
+describe("Add products to cart", () => {
+  it("Add single product to cart", () => {
     cy.fixture("cart-data.json").then(data => {
-        // Use these product slugs to add them into the cart from "cart-data.json" file
-        // where ProductName variable is available; just update its value and run the script
-        // 1- monetary-digital-033003, 2- monetary-physical-033008, 3- givex-digital-033005, 4- givex-physical-033004
-        // 5- experiences-physical-033001, 6- experiences-digital-033000, 7- simple-product-033009, 8- food-pickup-033006
-        // 9- food-delivery-033007, 10- voucher-product-033011
-        cy.findProductByName(data.ProductName).then(() => {
-            // The condition to handle different types of products is now handled inside the `findProductByName` command
+      const singleProductSlug = data.singleProduct;
+
+      // Custom commands to add product, proceed as guest user, etc.
+      cy.findProductByName(singleProductSlug);
+      cy.wait(2000);
+      cy.GuestUser();
+      cy.wait(7000);
+      cy.proceedtochkot();
+      cy.wait(10000);
+      cy.AddressDetails();
+      cy.wait(10000);
+      cy.ContinueToPayment({ timeout: 10000 });
+      cy.wait(10000);
+      cy.ShippingMethodOkbtn();
+      cy.wait(10000);
+
+      // Ensure the iframe is available and interact with its contents
+      cy.get('iframe[name^="__privateStripeFrame"]').should('be.visible').then($iframe => {
+        const $body = $iframe.contents().find('body');
+
+        // Ensure the iframe's body is fully loaded
+        cy.wrap($body).should('not.be.empty').within(() => {
+          // Check if the input field is available and interact with it
+          cy.get('input[name="cardnumber"]').should('exist').then($input => {
+            cy.wrap($input).should('be.visible').type('4242424242424242', { delay: 100 });
+          });
+
+          cy.get('input[name="exp-date"]').should('exist').then($input => {
+            cy.wrap($input).should('be.visible').type('1229', { delay: 100 });
+          });
+
+          cy.get('input[name="cvc"]').should('exist').then($input => {
+            cy.wrap($input).should('be.visible').type('123', { delay: 100 });
+          });
         });
-        cy.wait(2000)
-        /*cy.get('#login-email, #login-password, #checkout-as-guest').then($elements => {
-            // Check if any of the elements are not found
-            if ($elements.length !== 3) {
-                // Click on the button if any of the elements are not found
-                cy.get('div.col-12.px-4.proceed-checkout-cont button[type="button"]').click();
-            }
-            else {
-                //it will login user might be user or guest it is a random fucntion
-                cy.RandomLogin();
-            }
-        });*/
-        cy.GuestUser(); 
-        cy.wait(7000)
-        cy.ProceedtoCheckout();
-        cy.AddressDetails();
-        cy.wait(10000);
-        cy.ContinueToPayment()
-        cy.ShippingMethodOkbtn()
-        
-        
-
+      });
+    });
+  });
 });
-})
-})
-
-
-
-    

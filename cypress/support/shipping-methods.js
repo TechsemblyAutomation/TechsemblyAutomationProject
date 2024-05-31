@@ -6,7 +6,7 @@ Cypress.Commands.add("SimpleShippingMethod", ()=>{
 Cypress.Commands.add("ContinueToPayment", ()=>{    
   
   cy.get("button[type='submit']").click();
-  cy.wait(2000)
+  cy.wait(6000)
   
 })
 Cypress.Commands.add("GivexPhysical", ()=>{    

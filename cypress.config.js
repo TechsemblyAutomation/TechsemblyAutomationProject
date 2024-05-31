@@ -16,9 +16,10 @@ module.exports = defineConfig({
     "compilerOptions": {
       "types": ["cypress"],
       "defaultCommandTimeout": 90000,
+
       "pageLoadTimeout": 30000,
       "requestTimeout": 5000, // default is 5 seconds
-  "responseTimeout": 30000 // default is 30 seconds
+  "responseTimeout": 30000 // default is 30 seconds1
       
       // Move video-related configurations out of e2e object
     },

@@ -1,29 +1,26 @@
-// cypress/support/commands.js
+import 'cypress-iframe';
 
-Cypress.Commands.add("Stripe", () => {
-    cy.get('iframe[name^="__privateStripeFrame"]').then($iframe => {
-        if ($iframe.length === 0) {
-            cy.log('Error: Stripe iframe not found');
-            throw new Error('Stripe iframe not found');
-        }
+// Custom command to fill in Stripe card details
+Cypress.Commands.add('fillStripeCard', ({ cardNumber, expDate, cvc }) => {
+  // Wait for the Stripe iframe to load and become visible
+  cy.frameLoaded('iframe[name^="__privateStripeFrame"]');
+  
+  // Enter the iframe
+  cy.iframe('iframe[name^="__privateStripeFrame"]').within(() => {
+    // Fill in card number
+    cy.get('input[name="cardnumber"]').type(cardNumber, { delay: 10 });
 
-        const iframe = $iframe[0].contentWindow.document;
-        cy.wrap(iframe)
-            .find('input[name="cardnumber"]', { timeout: 10000 })
-            .should('exist')
-            .type('4111111111111111', { force: true });
+    // Fill in expiry date
+    cy.get('input[name="exp-date"]').type(expDate, { delay: 10 });
 
-        cy.wrap(iframe)
-            .find('input[name="exp-date"]', { timeout: 10000 })
-            .should('exist')
-            .type('1225', { force: true });
+    // Fill in CVC
+    cy.get('input[name="cvc"]').type(cvc, { delay: 10 });
 
-        cy.wrap(iframe)
-            .find('input[name="cvc"]', { timeout: 10000 })
-            .should('exist')
-            .type('123', { force: true });
-    });
+    // Optionally fill in postal code if needed
+    // cy.get('input[name="postal"]').type('12345', { delay: 10 });
+  });
 });
+
 
 Cypress.Commands.add("EGHL", () => {
     cy.get(':nth-child(5) > .radio-container > .d-flex > .checkmark').click();
