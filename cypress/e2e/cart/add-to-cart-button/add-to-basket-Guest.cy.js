@@ -1,6 +1,6 @@
 describe("Add products to cart", () => {
 
-    it.skip("Add single product to cart", () => {
+    it.only("Add single product to cart", () => {
       cy.fixture("cart-data.json").then(data => {
         const singleProductSlug = data.singleProduct; // Use singleProduct for single product slug
         // Use these product slugs to add them into the cart from "cart-data.json" file

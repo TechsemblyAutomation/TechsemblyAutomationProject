@@ -11,34 +11,29 @@ describe("Add products to cart", () => {
       cy.GuestUser();
       cy.wait(7000);
       cy.proceedtochkot();
-      cy.wait(10000);
+      cy.wait(5000);
       cy.AddressDetails();
-      cy.wait(10000);
-      cy.ContinueToPayment({ timeout: 10000 });
-      cy.wait(10000);
+      cy.wait(5000);
+      cy.ContinueToPayment();
+      cy.wait(2000);
       cy.ShippingMethodOkbtn();
-      cy.wait(10000);
+      cy.wait(5000);
 
-      // Ensure the iframe is available and interact with its contents
-      cy.get('iframe[name^="__privateStripeFrame"]').should('be.visible').then($iframe => {
+      // Card details to fill
+      const cardDetails = '4242424242424242123412312345'; // Card number + expDate + CVC + postal code
+
+      // Access the iframe and fill the single input field
+      cy.get('iframe[name^="__privateStripeFrame"]').then($iframe => {
         const $body = $iframe.contents().find('body');
-
-        // Ensure the iframe's body is fully loaded
-        cy.wrap($body).should('not.be.empty').within(() => {
-          // Check if the input field is available and interact with it
-          cy.get('input[name="cardnumber"]').should('exist').then($input => {
-            cy.wrap($input).should('be.visible').type('4242424242424242', { delay: 100 });
-          });
-
-          cy.get('input[name="exp-date"]').should('exist').then($input => {
-            cy.wrap($input).should('be.visible').type('1229', { delay: 100 });
-          });
-
-          cy.get('input[name="cvc"]').should('exist').then($input => {
-            cy.wrap($input).should('be.visible').type('123', { delay: 100 });
-          });
-        });
+        cy.wrap($body).find('input[name="cardnumber"]').type(cardDetails);
       });
+
+      // Assuming you have a form submission button outside the iframe
+      cy.get('button[type="submit"]').click();
+      cy.wait(6000)
+
+      // Add assertions to verify successful submission or handle any responses
+      cy.get('.breadcrumb-heading').should('include.text', 'Confirmed');
     });
   });
 });

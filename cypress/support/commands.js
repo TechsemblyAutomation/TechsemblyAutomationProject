@@ -1,3 +1,12 @@
+// cypress/support/commands.js
+
+Cypress.Commands.add('fillStripeCard', (iframeSelector, cardDetails) => {
+    cy.get(iframeSelector).then($iframe => {
+      const iframeBody = $iframe.contents().find('body');
+      cy.wrap(iframeBody).find('input[name="cardnumber"]').type(cardDetails);
+    });
+  });
+  
 
 
 

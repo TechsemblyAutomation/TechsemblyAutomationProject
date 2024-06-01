@@ -4,6 +4,8 @@ module.exports = defineConfig({
   reporter: 'cypress-mochawesome-reporter', 
   video: true,
   videosFolder: 'cypress/RecordedVideos',
+  "chromeWebSecurity": false,
+
   // Generating HTML reports
    // Configuring the folder for recorded videos
   
