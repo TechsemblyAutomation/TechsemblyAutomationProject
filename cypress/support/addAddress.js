@@ -22,5 +22,9 @@ Cypress.Commands.add("AddressDetails", () => {
     cy.get('#region').type(region);
     cy.get('#district').type(district);
     cy.get('#phone').type(phone);
-    cy.get("#continue-to-delivery-and-billing").click()
+    cy.ContinuetoDeliveryButton()
 });
+Cypress.Commands.add("ContinuetoDeliveryButton", ()=>{
+    cy.get("#continue-to-delivery-and-billing").click()
+
+})
